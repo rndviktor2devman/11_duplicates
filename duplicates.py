@@ -27,17 +27,7 @@ def get_files(path):
     return files_paths
 
 
-def remove_dirs(paths_list):
-    for path in paths_list:
-        shutil.rmtree(path)
-
-
-def remove_fs_files(paths_list):
-    for path in paths_list:
-        os.remove(path)
-
-
-def deletion_message(path_list, item_name="directory"):
+def notify_deletion(path_list, item_name="directory"):
     for path in path_list:
         print("removing {} {}".format(item_name, path))
 
@@ -64,10 +54,10 @@ if __name__ == '__main__':
 
     folders = get_folders(rootdir)
     duplicate_folders = get_duplicates(folders)
-    deletion_message(duplicate_folders)
-    remove_dirs(duplicate_folders)
+    notify_deletion(duplicate_folders)
+    list(map(shutil.rmtree, duplicate_folders))
     files = get_files(rootdir)
     duplicate_files = get_duplicates(files)
-    deletion_message(duplicate_files, "file")
-    remove_fs_files(duplicate_files)
+    notify_deletion(duplicate_files, "file")
+    list(map(os.remove, duplicate_files))
 
