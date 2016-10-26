@@ -6,7 +6,6 @@ import shutil
 def are_files_duplicates(file_path1, file_path2):
     if os.path.basename(file_path1) == os.path.basename(file_path2):
         if os.path.getsize(file_path1) == os.path.getsize(file_path2):
-            print("{} is a duplicate of {}".format(file_path2, file_path1))
             return True
 
     return False
@@ -30,14 +29,17 @@ def get_files(path):
 
 def remove_dirs(paths_list):
     for path in paths_list:
-        print("removing directory {}".format(path))
         shutil.rmtree(path)
 
 
 def remove_fs_files(paths_list):
     for path in paths_list:
-        print("removing file {}".format(path))
         os.remove(path)
+
+
+def deletion_message(path_list, item_name="directory"):
+    for path in path_list:
+        print("removing {} {}".format(item_name, path))
 
 
 def get_duplicates(paths_list):
@@ -61,7 +63,11 @@ if __name__ == '__main__':
         rootdir = os.getcwd()
 
     folders = get_folders(rootdir)
-    remove_dirs(get_duplicates(folders))
+    duplicate_folders = get_duplicates(folders)
+    deletion_message(duplicate_folders)
+    remove_dirs(duplicate_folders)
     files = get_files(rootdir)
-    remove_fs_files(get_duplicates(files))
+    duplicate_files = get_duplicates(files)
+    deletion_message(duplicate_files, "file")
+    remove_fs_files(duplicate_files)
 
